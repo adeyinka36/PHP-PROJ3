@@ -84,9 +84,17 @@ edit($conn,$title,$date,$time_spent,$learned,$resources,$tags);
                         <label for="what-i-learned">What I Learned</label>
                         <?php echo "<input id=title type=text name=learned value='".$res["learned"]."'>"?><br>
 
-
+                        <?php
+                        $entries=connect();
+                        $answer=joinTag($entries,$res["id"])->fetchALL();
+                           $tagArr=[];
+                           foreach($answer as $ans){
+                               array_push($tagArr,$ans["name"]);
+                           }
+                         $tagsA = implode(",",$tagArr);
+                        ?>
                         <label for="tags">tags</label>
-                        <?php echo "<input id=tags type=text name=tags value='".null."'>"?><br>
+                        <?php echo "<input id=tags type=text name=tags value='".$tagsA."'>"?><br>
 
                         <label for="resources-to-remember">Resources to Remember</label>
                         <textarea id="resources-to-remember" rows="5" name="resources" ><?php echo $res["resources"]?></textarea>
