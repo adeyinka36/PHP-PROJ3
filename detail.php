@@ -52,7 +52,10 @@ $identity;
                                 <li>Nunc ut rhoncus felis, vel tincidunt neque</li>
                                 <li><a href="">Ipsum dolor sit amet</a></li> -->
                                 <?php
-                                echo  "<li>".$res["resources"]."</li>";
+                                $resources=explode(",",$res["resources"]);
+                                foreach($resources as $r){
+                                echo  "<li>".$r."</li>";
+                                }
                             //     if(!empty($res["resources"])){
                             //     foreach($res["resources"] as $r){
                             //         echo  "<li>".$r."</li>";

@@ -36,7 +36,7 @@ if(isset($_POST["tag"])){
 $tag=filter_var($_POST["tag"], FILTER_SANITIZE_STRING);
    newBook($conn,$tag,$title);
 }
-//header("Location:index.php");
+header("Location:index.php");
 }
 ?>
         <section>

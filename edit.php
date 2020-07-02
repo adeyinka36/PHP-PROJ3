@@ -51,7 +51,9 @@ if(filter_has_var(INPUT_POST,"learned")){
 }
 if(filter_has_var(INPUT_POST,"tags")){
     $tags = $_POST["tags"];
+    
 }
+
  $date=date("Y")."-".date("m")."-".date("d");
 // redirect after form submission
 
@@ -64,7 +66,7 @@ edit($conn,$title,$date,$time_spent,$learned,$resources,$tags);
 
 
     
-//header("Location:index.php");
+header("Location:index.php");
 }
 
  ?>

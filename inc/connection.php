@@ -66,6 +66,7 @@ function edit ($database,$t,$d,$ts,$l,$r,$tags){
     //       }
     //   }
       foreach($tagArr as $qr){
+        
           updateJoint($database,$qr,$t);
       }
         
@@ -149,19 +150,37 @@ function joinTag($db,$id){
 
 
 
-
-// function for adding new data to joint table
 function newBook($db,$t,$book){
-    if(!gettype($t)=="array"){
+    
+    if(gettype($t)=="string"){
         $t=explode(",",$t);
+    
     }
+
+    
     foreach($t as $tag){
       updateJoint($db,$tag,$book);
     }
-};
-function updateJoint($db,$t,$book){
+}
+
+
+// function for adding new data to joint table
+function updateJoint($db,$tags,$book){
+    
+        
+        checkTag($db,$tags);
+    
+    $query1="SELECT * FROM tags WHERE name=:t";
+    $res=$db->prepare($query1);
+    $res->execute(["t"=>$tags]);
+    $tagId=$res->fetch();
+    $tagId=$tagId["id"];
  
-    $res3->execute(["t"=>$book]);
+
+    // getting new book id
+    $query3="SELECT * FROM entries WHERE title=:b";
+    $res3=$db->prepare($query3);
+    $res3->execute(["b"=>$book]);
     $bookPk=$res3->fetch();
     $bookPk=$bookPk["id"];
 
@@ -172,4 +191,22 @@ function updateJoint($db,$t,$book){
     $res2=$db->prepare($query2);
     $res2->execute(["tI"=>$tagId,"eI"=>$bookPk]);
 
+}
+
+
+
+// this function check if tag exists and creates one if it doesnt
+
+function checkTag($db,$tagCheck){
+    $query1="SELECT * FROM tags WHERE name=:t";
+    $res=$db->prepare($query1);
+    $res->execute(["t"=>$tagCheck]);
+    $tagId=$res->fetch();
+    $tagId=$tagId["id"];
+    if(!$tagId){
+
+        $insertNewTag="INSERT INTO tags(name) VALUES (:n)";
+        $insertion=$db->prepare($insertNewTag);
+        $insertion->execute(["n"=>$tagCheck]);
+    }
 }
