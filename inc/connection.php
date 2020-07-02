@@ -35,7 +35,7 @@
          $sql->execute(['t'=>$t,'d'=>$d,'ts'=>$ts,'l'=>$l,'r'=>$r]);
          
          }
-         catch(Exeception $e){
+         catch(Exception $e){
              echo $e->getMessage();
          }
 
@@ -65,13 +65,16 @@ function edit ($database,$t,$d,$ts,$l,$r,$tags){
     //           echo $e->getMessage();
     //       }
     //   }
+    session_start();
+      deleteTags($database,$_SESSION["id"]);
+      session_destroy();
       foreach($tagArr as $qr){
         
           updateJoint($database,$qr,$t);
       }
         
      }
-     catch(Exeception $e){
+     catch(Exception $e){
          echo $e->getMessage();
      }
 
@@ -98,7 +101,7 @@ function delete ($database,$id){
      $sql->execute(['id'=>$_SESSION["id"]]);
      
      }
-     catch(Exeception $e){
+     catch(Exception $e){
          echo $e->getMessage();
      }
 
@@ -209,4 +212,14 @@ function checkTag($db,$tagCheck){
         $insertion=$db->prepare($insertNewTag);
         $insertion->execute(["n"=>$tagCheck]);
     }
+}
+
+
+
+// DELETE TAS BEFORE PUTTING NEW ONES
+
+function deleteTags($db,$id){
+    $query ="DELETE * FROM entries_tags WHERE entriesId=:id";
+    $res=$db->prepare($query);
+    $res->execute(["id"=>$id]);
 }
