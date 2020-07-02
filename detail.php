@@ -25,11 +25,13 @@ $identity;
             <div class="container">
                 <div class="entry-list single">
                 <ul>
-                       <?php
-                       foreach($tags as $t){
-                           echo "<li class=tags><a href=detail.php?tag=".$t["id"].">".$t["name"]."</a></li>";
-                       }
-                     ?>
+                <?php
+                 $answer=joinTag($entries,$res["id"])->fetchALL();
+                 
+                 foreach($answer as $a){
+                     echo "<li class=tags>".$a["name"]."<?li>";
+                 }
+                 ?>
                     </ul>
                     <article>
                         <h1><?php echo $res["title"]?></h1>

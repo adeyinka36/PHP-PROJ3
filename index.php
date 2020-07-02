@@ -17,20 +17,24 @@
         <section>
             <div class="container">
                 <div class="entry-list">
-                    <ul>
-                       <?php
-                       foreach($tags as $t){
-                           echo "<li class=tags><a href=index.php?tag=".$t["id"].">".$t["name"]."</a></li>";
-                       }
-                     ?>
-                    </ul>
+                    
                     <?php foreach($rows as $r){
-                        echo 
+                        
+                        // getting the tags
+                        $answer=joinTag($entries,$r["id"])->fetchALL();
+
+                       echo                       
                         "<article>
                         <h2><a href=detail.php?id=".$r["id"].">".$r["title"]."</a></h2>
-                        <time >".$r["date"]."</time>
-                    </article>";
+                        <time >".$r["date"]."</time>";
+                     
+                    foreach($answer as $a){
+                        echo "<ul><li class=tags><a href=index.php?tag=".$a["id"].">".$a["name"]."</a></li></ul>";
+                    }
+                     echo "</article>";
+                
                     }?>
+                    
                     <!-- <article>
                         <h2><a href="detail.z".php">The best day I’ve ever had</a></h2>
                         <time datetime="2016-01-31">January 31, 2016</time>

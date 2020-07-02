@@ -31,9 +31,10 @@ $identity=null;
     $time_spent = null;
     $learned = null;
     $resources = null;
+    $tags=null;
   
 if(isset($_POST["title"])){
-    echo "true";
+   
   if(filter_has_var(INPUT_POST,"title")){
       $title = $_POST["title"];
   }
@@ -48,15 +49,20 @@ if(filter_has_var(INPUT_POST,"resources")){
 if(filter_has_var(INPUT_POST,"learned")){
     $learned = $_POST["learned"];
 }
+if(filter_has_var(INPUT_POST,"tags")){
+    $tags = $_POST["tags"];
+}
  $date=date("Y")."-".date("m")."-".date("d");
 // redirect after form submission
 
-edit($conn,$title,$date,$time_spent,$learned,$resources);
+edit($conn,$title,$date,$time_spent,$learned,$resources,$tags);
     $title = null;
     $date =null;
     $time_spent = null;
     $learned = null;
     $resources = null;
+
+
     
 //header("Location:index.php");
 }
@@ -77,6 +83,11 @@ edit($conn,$title,$date,$time_spent,$learned,$resources);
                         <?php echo "<input id=title type=text name=timeSpent value='".$res["time_spent"]."'>"?><br>
                         <label for="what-i-learned">What I Learned</label>
                         <?php echo "<input id=title type=text name=learned value='".$res["learned"]."'>"?><br>
+
+
+                        <label for="tags">tags</label>
+                        <?php echo "<input id=tags type=text name=tags value='".null."'>"?><br>
+
                         <label for="resources-to-remember">Resources to Remember</label>
                         <textarea id="resources-to-remember" rows="5" name="resources" ><?php echo $res["resources"]?></textarea>
                         <input type="submit" value="Publish Entry" >

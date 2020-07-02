@@ -20,7 +20,8 @@
 // function to return all entries
   function readAll($database){
 
-    $data=$database->query("SELECT * FROM entries ORDER BY date ");
+    $data=$database->query("SELECT * FROM entries ORDER BY entries.date ASC ");
+    // $data=$database->query("SELECT * FROM entries_tags");
     return $data;
     
   }
@@ -43,15 +44,31 @@
   }
 
 //   edit fucntion
-function edit ($database,$t,$d,$ts,$l,$r){
-
+function edit ($database,$t,$d,$ts,$l,$r,$tags){
+ $tagArr=explode(",",$tags);
+ $tagIds=[];
     // filtering inputs for databas
     
     $query="UPDATE entries SET title = :t, 'date'= :d, time_spent  =:ts, learned = :l ,resources= :r WHERE id =:id";
      try{
      $sql=$database->prepare($query);
      $sql->execute(['t'=>$t,'d'=>$d,'ts'=>$ts,'l'=>$l,'r'=>$r,"id"=>$_SESSION["id"]]);
-     echo "sucess";
+     
+    //   foreach($tagArr as $tA){
+    //       try{
+    //         $q="SELECT * FROM  tags WHERE name = :v";
+    //         $qRes=$database->prepare($q);
+    //         $qRes->execute(["v"=>$tA])->fetch();
+    //         array_push($tagIds,$qRes["id"]);
+            
+    //       }catch(Exception $e){
+    //           echo $e->getMessage();
+    //       }
+    //   }
+      foreach($tagArr as $qr){
+          updateJoint($database,$qr,$t);
+      }
+        
      }
      catch(Exeception $e){
          echo $e->getMessage();
@@ -104,13 +121,55 @@ return $result;
   
 // get tags of a specific id
 function matchingTags($db,$tag){
-    $query="SELECT * FROM entries WHERE tagId=:t ";
+    $query="SELECT entries_tags.entriesId,entries_tags.tagId,entries.title FROM entries_tags JOIN  entries ON entries_tags.entriesId=entries.id WHERE entries_tags.tagId =:d";
     try{
     $result=$db->prepare($query);
-    $result->execute(["t"=>$tag]);
+    $result->execute(["d"=>$tag]);
     return $result;
     }
     catch(Exception $e){
      echo $e->getMessage();
     }
+}
+
+
+
+// get tags from joined table
+function joinTag($db,$id){
+    try{
+    
+    $query="SELECT entries_tags.entriesId,entries_tags.tagId,tags.name,tags.id FROM entries_tags JOIN  tags ON entries_tags.tagId=tags.id WHERE entries_tags.entriesId =:d";
+    $res=$db->prepare($query);
+    $res->execute(["d"=>$id]);
+    return $res;
+    }catch( Exception $e){
+        echo $e->getMessage();
+    }
+}
+
+
+
+
+// function for adding new data to joint table
+function newBook($db,$t,$book){
+    if(!gettype($t)=="array"){
+        $t=explode(",",$t);
+    }
+    foreach($t as $tag){
+      updateJoint($db,$tag,$book);
+    }
+};
+function updateJoint($db,$t,$book){
+ 
+    $res3->execute(["t"=>$book]);
+    $bookPk=$res3->fetch();
+    $bookPk=$bookPk["id"];
+
+ 
+    // query to update joint table with both ids
+    $query2="INSERT INTO  entries_tags(tagId,entriesId)
+         VALUES( :tI,:eI)";
+    $res2=$db->prepare($query2);
+    $res2->execute(["tI"=>$tagId,"eI"=>$bookPk]);
+
 }

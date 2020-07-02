@@ -6,10 +6,11 @@
     $time_spent = null;
     $learned = null;
     $resources = null;
+    $tag=null;
 if(isset($_POST["title"])){
-    echo "true";
+    
   if(filter_has_var(INPUT_POST,"title")){
-      echo"hfojnklf";
+      
       $title = $_POST["title"];
   }
     if(filter_has_var(INPUT_POST,"timeSpent")){
@@ -26,8 +27,16 @@ if(filter_has_var(INPUT_POST,"learned")){
  $date=date("Y")."-".date("m")."-".date("d");
 // redirect after form submission
 
+
 add($conn,$title,$date,$time_spent,$learned,$resources);
-header("Location:index.php");
+
+// add details to joint table
+if(isset($_POST["tag"])){
+    
+$tag=filter_var($_POST["tag"], FILTER_SANITIZE_STRING);
+   newBook($conn,$tag,$title);
+}
+//header("Location:index.php");
 }
 ?>
         <section>
@@ -43,6 +52,12 @@ header("Location:index.php");
                         <input id="time-spent" type="text" name="timeSpent"><br>
                         <label for="what-i-learned">What I Learned</label>
                         <textarea id="what-i-learned" rows="5" name="learned"></textarea>
+                        
+                        <label for="tag">Tag</label>
+                        <input id="tag" type="text" name="tag"><br>
+                        
+                        
+                        
                         <label for="resources-to-remember">Resources to Remember</label>
                         <textarea id="resources-to-remember" rows="5" name="resources"></textarea>
                         <input type="submit" value="Publish Entry" class="button">
