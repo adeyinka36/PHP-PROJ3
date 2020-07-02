@@ -67,6 +67,7 @@ function edit ($database,$t,$d,$ts,$l,$r,$tags){
     //   }
     session_start();
       deleteTags($database,$_SESSION["id"]);
+      
       session_destroy();
       foreach($tagArr as $qr){
         
@@ -219,7 +220,8 @@ function checkTag($db,$tagCheck){
 // DELETE TAS BEFORE PUTTING NEW ONES
 
 function deleteTags($db,$id){
-    $query ="DELETE * FROM entries_tags WHERE entriesId=:id";
+    $query ="DELETE FROM entries_tags WHERE entriesId=:id";
     $res=$db->prepare($query);
     $res->execute(["id"=>$id]);
+    
 }

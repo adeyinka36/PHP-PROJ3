@@ -65,8 +65,7 @@ edit($conn,$title,$date,$time_spent,$learned,$resources,$tags);
     $resources = null;
 
 
-    
-header("Location:index.php");
+     header("Location:index.php");
 }
 
  ?>
