@@ -32,6 +32,7 @@ $identity=null;
     $learned = null;
     $resources = null;
     $tags=null;
+    $date=null;
   
 if(isset($_POST["title"])){
    
@@ -53,8 +54,10 @@ if(filter_has_var(INPUT_POST,"tags")){
     $tags = $_POST["tags"];
     
 }
+if(filter_has_var(INPUT_POST,"date")){
+    $date = $_POST["date"];
 
- $date=date("Y")."-".date("m")."-".date("d");
+}
 // redirect after form submission
 
 edit($conn,$title,$date,$time_spent,$learned,$resources,$tags);

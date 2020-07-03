@@ -24,7 +24,11 @@ if(filter_has_var(INPUT_POST,"resources")){
 if(filter_has_var(INPUT_POST,"learned")){
     $learned = $_POST["learned"];
 }
- $date=date("Y")."-".date("m")."-".date("d");
+if(filter_has_var(INPUT_POST,"date")){
+    $date = $_POST["date"];
+    
+}
+ 
 // redirect after form submission
 
 
